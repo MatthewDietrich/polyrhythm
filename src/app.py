@@ -19,6 +19,9 @@ class App:
         pygame.quit()
         sys.exit(0)
 
+    def _draw(self):
+        pass
+
     def run(self):
         self.running = True
         while self.running:
@@ -26,5 +29,6 @@ class App:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+            self._draw()
             pygame.display.flip()
         self._exit()
