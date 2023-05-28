@@ -1,3 +1,24 @@
 window:
-  width: 480
-  height: 640
+  size: # width, height (pixels)
+    - 480
+    - 640
+  background_color: # red, green, blue, alpha (0-255)
+    - 0
+    - 0
+    - 92
+    - 255
+  ball_color:
+    - 0
+    - 255
+    - 255
+    - 255
+  ball_radius: 10
+  ball_margin: 5
+rhythm:
+  notes: # frequencies in Hz
+    - 440.00
+    - 554.37
+    - 659.25
+    - 880.00
+    - 1046.50
+  duration: 20 # time in seconds for first note to oscillate once
