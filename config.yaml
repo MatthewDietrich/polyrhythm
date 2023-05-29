@@ -12,6 +12,11 @@ window:
     - 255
     - 255
     - 255
+  ball_highlight_color:
+    - 255
+    - 255
+    - 92
+    - 255
   ball_radius: 10
   ball_margin: 5
 rhythm:

@@ -39,15 +39,21 @@ class App:
         self.elapsed += dt
         self.display_surf.fill(self.config['window']['background_color'])
         for i, x in enumerate(self.ball_positions):
-            vel = self.base_velocity * (i + 1)
             interval = (i + 1) * self.base_duration
             x = int((self.elapsed % interval) / interval * self.window_size[0])
+            prev_direction = self.ball_directions[i]
+            self.ball_directions[i] = 1
             if int(self.elapsed / interval) % 2:
+                self.ball_directions[i] = -1
                 x = self.window_size[0] - x
             y = (i + 1) * (2*self.ball_radius + self.ball_margin)
+
+            ball_color = self.config['window']['ball_color']
+            if prev_direction != self.ball_directions[i]:
+                ball_color = self.config['window']['ball_highlight_color']
             pygame.draw.circle(
                 self.display_surf,
-                self.config['window']['ball_color'],
+                ball_color,
                 (x, y),
                 self.ball_radius
             )
