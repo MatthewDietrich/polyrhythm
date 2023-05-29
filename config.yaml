@@ -21,4 +21,4 @@ rhythm:
     - 659.25
     - 880.00
     - 1046.50
-  duration: 20 # time in seconds for first note to oscillate once
+  duration: 5 # time in seconds for first note to oscillate once
