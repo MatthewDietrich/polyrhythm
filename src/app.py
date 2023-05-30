@@ -10,6 +10,7 @@ import yaml
 with open('config.yaml', 'r') as f:
     CONFIG = yaml.safe_load(f)
 WINDOW_CONFIG = CONFIG['window']
+BALL_CONFIG = CONFIG['ball']
 RHYTHM_CONFIG = CONFIG['rhythm']
 
 
@@ -36,8 +37,8 @@ class Ball:
     def __init__(self, position, direction, note_frequency) -> None:
         self.position = position
         self.direction = direction
-        self.color = tuple(WINDOW_CONFIG['ball_color'])
-        self.highlight_color = tuple(WINDOW_CONFIG['ball_highlight_color'])
+        self.color = tuple(BALL_CONFIG['color'])
+        self.highlight_color = tuple(BALL_CONFIG['highlight_color'])
         self.note_frequency = note_frequency
         samples = np.arange(
             RHYTHM_CONFIG['note_duration'] * note_frequency
@@ -64,7 +65,7 @@ class Ball:
             self.draw_color = converge_color(
                 self.draw_color,
                 self.color,
-                WINDOW_CONFIG['ball_highlight_frames']
+                BALL_CONFIG['highlight_frames']
             )
         if self.draw_color == self.color:
             self.highlighted = False
@@ -98,8 +99,8 @@ class App:
         )
         self.base_duration = RHYTHM_CONFIG['rhythm_duration'] * 1000
         self.base_velocity = self.window_size[0] / self.base_duration
-        self.ball_radius = WINDOW_CONFIG['ball_radius']
-        self.ball_margin = WINDOW_CONFIG['ball_margin']
+        self.ball_radius = BALL_CONFIG['radius']
+        self.ball_margin = BALL_CONFIG['margin']
 
         self.balls = [Ball(
             position=self.ball_radius,

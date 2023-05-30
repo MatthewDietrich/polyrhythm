@@ -7,20 +7,21 @@ window:
     - 0
     - 92
     - 255
-  ball_color:
+  borderless: false
+ball:
+  color:
     - 0
     - 255
     - 255
     - 255
-  ball_highlight_color:
+  highlight_color:
     - 255
     - 255
     - 92
     - 255
-  ball_radius: 10
-  ball_margin: 5
-  ball_highlight_frames: 20
-  borderless: false
+  radius: 10
+  margin: 5
+  highlight_frames: 20
 rhythm:
   notes: # frequencies in Hz
     - 440
@@ -39,3 +40,4 @@ rhythm:
     - 1661.22
   rhythm_duration: 0.5 # time in seconds for first note to oscillate once
   note_duration: 0.5 # time in seconds to play each note
+  base_sound: media/a440pluck.wav
