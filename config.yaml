@@ -20,6 +20,7 @@ window:
   ball_radius: 10
   ball_margin: 5
   ball_highlight_frames: 20
+  borderless: false
 rhythm:
   notes: # frequencies in Hz
     - 440

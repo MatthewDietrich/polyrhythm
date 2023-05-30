@@ -43,7 +43,7 @@ class Ball:
             RHYTHM_CONFIG['note_duration'] * note_frequency
         )
         signal = np.sin(2 * np.pi * note_frequency * samples)
-        signal *= 32767
+        signal *= 32767 # Magic number?
         signal = np.int8(signal)
         self.note = pygame.sndarray.make_sound(
             np.repeat(
@@ -81,7 +81,10 @@ class App:
             channels=1
         )
         pygame.init()
-        os.environ['SDL_VIDEO_WINDOW_POS'] = '0.0'
+        borderless_flag = 0
+        if WINDOW_CONFIG['borderless']:
+            borderless_flag = pygame.NOFRAME
+            os.environ['SDL_VIDEO_WINDOW_POS'] = '0.0'
 
         self.clock = pygame.time.Clock()
         self.start_time = self.clock.get_time()
@@ -91,7 +94,7 @@ class App:
         self.background_color = WINDOW_CONFIG['background_color']
         self.display_surf = pygame.display.set_mode(
             self.window_size,
-            pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.NOFRAME
+            pygame.HWSURFACE | pygame.DOUBLEBUF | borderless_flag
         )
         self.base_duration = RHYTHM_CONFIG['rhythm_duration'] * 1000
         self.base_velocity = self.window_size[0] / self.base_duration
