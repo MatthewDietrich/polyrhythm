@@ -39,12 +39,19 @@ class Ball:
         self.color = tuple(WINDOW_CONFIG['ball_color'])
         self.highlight_color = tuple(WINDOW_CONFIG['ball_highlight_color'])
         self.note_frequency = note_frequency
-        self.note = pygame.mixer.Sound(
-            buffer=(np.arange(
-                RHYTHM_CONFIG['note_duration'] * self.note_frequency
-            ) / self.note_frequency)
+        samples = np.arange(
+            RHYTHM_CONFIG['note_duration'] * note_frequency
         )
-
+        signal = np.sin(2 * np.pi * note_frequency * samples)
+        signal *= 32767
+        signal = np.int8(signal)
+        self.note = pygame.sndarray.make_sound(
+            np.repeat(
+                signal.reshape(len(signal), 1),
+                2,
+                axis=1
+            )
+        )
         self.draw_color = self.color
         self.highlighted = False
 
@@ -52,7 +59,7 @@ class Ball:
         self.highlighted = True
         self.draw_color = self.highlight_color
     
-    def next_highlight(self, dt):
+    def next_highlight(self):
         if self.highlighted:
             self.draw_color = converge_color(
                 self.draw_color,
@@ -119,7 +126,7 @@ class App:
             if prev_direction != ball.direction:
                 ball.start_highlight()
                 ball.play_note()
-            ball.next_highlight(dt)
+            ball.next_highlight()
             y = (i + 1) * (2*self.ball_radius + self.ball_margin)
 
             pygame.draw.circle(
