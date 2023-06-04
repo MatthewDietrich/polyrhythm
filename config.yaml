@@ -41,3 +41,7 @@ rhythm:
   rhythm_duration: 0.5 # time in seconds for first note to oscillate once
   note_duration: 0.5 # time in seconds to play each note
   base_sound: media/a440pluck.wav
+mixer:
+  frequency: 44100
+  size: -16
+  channels: 1

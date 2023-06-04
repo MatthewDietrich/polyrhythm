@@ -1,10 +1,11 @@
 import os
 import sys
 
-import numpy as np
 import pygame
 import pygame.locals
 import yaml
+
+from .utils import change_frequency, converge_color
 
 
 with open('config.yaml', 'r') as f:
@@ -12,26 +13,19 @@ with open('config.yaml', 'r') as f:
 WINDOW_CONFIG = CONFIG['window']
 BALL_CONFIG = CONFIG['ball']
 RHYTHM_CONFIG = CONFIG['rhythm']
+MIXER_CONFIG = CONFIG['mixer']
 
 
-def converge(a, b, step):
-    if a > b:
-        if b == 0:
-            b = a - 1
-        return int(max(0, a - b/step))
-    elif a < b:
-        if b == 0:
-            b = a + 1
-        return int(min(255, a + b/step))
-    return a
+pygame.init()
+pygame.mixer.init(
+    frequency=MIXER_CONFIG['frequency'],
+    size=MIXER_CONFIG['size'],
+    channels=MIXER_CONFIG['channels']
+)
 
-
-def converge_color(a, b, step):
-    return tuple(
-        converge(a[i], b[i], step)
-        for i in range(len(a))
-    )
-
+BASE_SOUND_ARRAY = pygame.sndarray.array(
+    pygame.mixer.Sound(file=RHYTHM_CONFIG['base_sound'])
+)
 
 class Ball:
     def __init__(self, position, direction, note_frequency) -> None:
@@ -40,17 +34,10 @@ class Ball:
         self.color = tuple(BALL_CONFIG['color'])
         self.highlight_color = tuple(BALL_CONFIG['highlight_color'])
         self.note_frequency = note_frequency
-        samples = np.arange(
-            RHYTHM_CONFIG['note_duration'] * note_frequency
-        )
-        signal = np.sin(2 * np.pi * note_frequency * samples)
-        signal *= 32767 # Magic number?
-        signal = np.int8(signal)
         self.note = pygame.sndarray.make_sound(
-            np.repeat(
-                signal.reshape(len(signal), 1),
-                2,
-                axis=1
+            change_frequency(
+                BASE_SOUND_ARRAY,
+                note_frequency / 440.0
             )
         )
         self.draw_color = self.color
@@ -76,12 +63,6 @@ class Ball:
 
 class App:
     def __init__(self) -> None:
-        pygame.mixer.pre_init(
-            frequency=44100,
-            size=-16,
-            channels=1
-        )
-        pygame.init()
         borderless_flag = 0
         if WINDOW_CONFIG['borderless']:
             borderless_flag = pygame.NOFRAME
@@ -112,6 +93,7 @@ class App:
 
     def _exit(self):
         print('Exiting')
+        pygame.mixer.quit()
         pygame.quit()
         sys.exit(0)
 
