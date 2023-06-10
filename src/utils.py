@@ -21,14 +21,11 @@ def converge_color(a, b, step):
     )
 
 
-def change_frequency(samples, factor):
-    if factor == 1.0:
-        return samples
-    new_rate = int(44100 * factor)
+def change_frequency(samples, base_rate, factor):
     return np.array(
         resample(
             samples,
-            new_rate,
+            int(base_rate * factor),
         ),
         dtype='int16'
     )

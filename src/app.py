@@ -27,6 +27,7 @@ BASE_SOUND_ARRAY = pygame.sndarray.array(
     pygame.mixer.Sound(file=RHYTHM_CONFIG['base_sound'])
 )
 
+
 class Ball:
     def __init__(self, position, direction, note_frequency) -> None:
         self.position = position
@@ -37,7 +38,8 @@ class Ball:
         self.note = pygame.sndarray.make_sound(
             change_frequency(
                 BASE_SOUND_ARRAY,
-                note_frequency / 440.0
+                MIXER_CONFIG['frequency'],
+                note_frequency / RHYTHM_CONFIG['base_frequency']
             )
         )
         self.draw_color = self.color
