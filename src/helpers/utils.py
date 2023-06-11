@@ -21,11 +21,11 @@ def converge_color(a, b, step):
     )
 
 
-def change_frequency(samples, base_rate, factor):
+def change_frequency(samples, base_sample_rate, factor):
     return np.array(
         resample(
             samples,
-            int(base_rate * factor),
+            int(base_sample_rate * factor),
         ),
         dtype='int16'
     )
