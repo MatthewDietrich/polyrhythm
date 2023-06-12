@@ -10,12 +10,7 @@ from .objects.ball import Ball
 
 
 class App:
-    def __init__(self) -> None:
-        borderless_flag = 0
-        if WINDOW_CONFIG['borderless']:
-            borderless_flag = pygame.NOFRAME
-            os.environ['SDL_VIDEO_WINDOW_POS'] = '0.0'
-        
+    def __init__(self) -> None:      
         pygame.init()
         pygame.mixer.init(
             frequency=MIXER_CONFIG['frequency'],
@@ -33,6 +28,10 @@ class App:
 
         self.window_size = WINDOW_CONFIG['size']
         self.background_color = WINDOW_CONFIG['background_color']
+        borderless_flag = 0
+        if WINDOW_CONFIG['borderless']:
+            borderless_flag = pygame.NOFRAME
+            os.environ['SDL_VIDEO_WINDOW_POS'] = '0.0'
         self.display_surf = pygame.display.set_mode(
             self.window_size,
             pygame.HWSURFACE | pygame.DOUBLEBUF | borderless_flag
@@ -54,6 +53,8 @@ class App:
             )
         ) for freq in RHYTHM_CONFIG['notes']]
 
+        self.rhythm_margin = (self.window_size[1] - len(self.balls) * (2*self.ball_radius + self.ball_margin)) / 2
+
         self.elapsed = 0
 
     def _exit(self):
@@ -67,9 +68,9 @@ class App:
         self.elapsed += dt
         self.display_surf.fill(self.background_color)
         for i, ball in enumerate(self.balls):
-            interval = (i + 1) * self.base_duration
+            interval = (i*0.1 + 2) * self.base_duration
             x = int((self.elapsed % interval) / interval * self.window_size[0])
-            y = (i + 1) * (2*self.ball_radius + self.ball_margin)
+            y = (i + 1) * (2*self.ball_radius + self.ball_margin) + self.rhythm_margin
             prev_direction = ball.direction
             ball.direction = 1
 
