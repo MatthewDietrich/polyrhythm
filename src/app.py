@@ -36,7 +36,8 @@ class App:
             self.window_size,
             pygame.HWSURFACE | pygame.DOUBLEBUF | borderless_flag
         )
-        self.base_duration = RHYTHM_CONFIG['rhythm_duration'] * 1000
+        
+        self.base_duration = RHYTHM_CONFIG['duration'] * 1000
         self.ball_radius = BALL_CONFIG['radius']
         self.ball_margin = BALL_CONFIG['margin']
 
