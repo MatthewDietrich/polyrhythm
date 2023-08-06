@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.signal import resample
+from scipy import signal
 
 
 def converge(a, b, step):
@@ -20,7 +20,7 @@ def converge_color(a, b, step):
 
 def change_frequency(samples, base_sample_rate, factor):
     return np.array(
-        resample(
+        signal.resample(
             samples,
             int(base_sample_rate * factor),
         ),

@@ -1,7 +1,7 @@
 import pygame
 
-from ..helpers.config import BALL_CONFIG
-from ..helpers.utils import converge_color
+from src.helpers import config
+from src.helpers import utils
 
 
 class Ball:
@@ -9,8 +9,8 @@ class Ball:
         self.radius = radius
         self.position = position
         self.direction = direction
-        self.color = tuple(BALL_CONFIG["color"])
-        self.highlight_color = tuple(BALL_CONFIG["highlight_color"])
+        self.color = tuple(config.BALL["color"])
+        self.highlight_color = tuple(config.BALL["highlight_color"])
         self.note = note
         self.draw_color = self.color
         self.highlighted = False
@@ -21,8 +21,8 @@ class Ball:
 
     def next_highlight(self):
         if self.highlighted:
-            self.draw_color = converge_color(
-                self.draw_color, self.color, BALL_CONFIG["highlight_frames"]
+            self.draw_color = utils.converge_color(
+                self.draw_color, self.color, config.BALL["highlight_frames"]
             )
         if self.draw_color == self.color:
             self.highlighted = False

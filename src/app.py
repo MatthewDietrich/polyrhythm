@@ -4,56 +4,55 @@ import sys
 import pygame
 import pygame.locals
 
-from .helpers.config import WINDOW_CONFIG, BALL_CONFIG, RHYTHM_CONFIG, MIXER_CONFIG
-from .helpers.utils import change_frequency
-from .objects.ball import Ball
+from src.helpers import config, utils
+from src.objects import ball
 
 
 class App:
     def __init__(self) -> None:
         pygame.init()
         pygame.mixer.init(
-            frequency=MIXER_CONFIG["frequency"],
-            size=MIXER_CONFIG["size"],
-            channels=MIXER_CONFIG["channels"],
+            frequency=config.MIXER["frequency"],
+            size=config.MIXER["size"],
+            channels=config.MIXER["channels"],
         )
 
         self.base_sndarray = pygame.sndarray.array(
-            pygame.mixer.Sound(file=RHYTHM_CONFIG["base_sound"])
+            pygame.mixer.Sound(file=config.RHYTHM["base_sound"])
         )
 
         self.clock = pygame.time.Clock()
         self.start_time = self.clock.get_time()
         self.prev_draw_time = self.start_time
 
-        self.window_size = WINDOW_CONFIG["size"]
-        self.background_color = WINDOW_CONFIG["background_color"]
+        self.window_size = config.WINDOW["size"]
+        self.background_color = config.WINDOW["background_color"]
         borderless_flag = 0
-        if WINDOW_CONFIG["borderless"]:
+        if config.WINDOW["borderless"]:
             borderless_flag = pygame.NOFRAME
             os.environ["SDL_VIDEO_WINDOW_POS"] = "0.0"
         self.display_surf = pygame.display.set_mode(
             self.window_size, pygame.HWSURFACE | pygame.DOUBLEBUF | borderless_flag
         )
 
-        self.base_duration = RHYTHM_CONFIG["duration"] * 1000
-        self.ball_radius = BALL_CONFIG["radius"]
-        self.ball_margin = BALL_CONFIG["margin"]
+        self.base_duration = config.RHYTHM["duration"] * 1000
+        self.ball_radius = config.BALL["radius"]
+        self.ball_margin = config.BALL["margin"]
 
         self.balls = [
-            Ball(
+            ball.Ball(
                 radius=self.ball_radius,
                 position=(0, 0),
                 direction=1,
                 note=pygame.sndarray.make_sound(
-                    change_frequency(
+                    utils.change_frequency(
                         self.base_sndarray,
-                        MIXER_CONFIG["frequency"],
-                        freq / RHYTHM_CONFIG["base_frequency"],
+                        config.MIXER["frequency"],
+                        freq / config.RHYTHM["base_frequency"],
                     )
                 ),
             )
-            for freq in RHYTHM_CONFIG["notes"]
+            for freq in config.RHYTHM["notes"]
         ]
 
         self.rhythm_margin = (
