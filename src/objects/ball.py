@@ -9,8 +9,8 @@ class Ball:
         self.radius = radius
         self.position = position
         self.direction = direction
-        self.color = tuple(BALL_CONFIG['color'])
-        self.highlight_color = tuple(BALL_CONFIG['highlight_color'])
+        self.color = tuple(BALL_CONFIG["color"])
+        self.highlight_color = tuple(BALL_CONFIG["highlight_color"])
         self.note = note
         self.draw_color = self.color
         self.highlighted = False
@@ -18,13 +18,11 @@ class Ball:
     def start_highlight(self):
         self.highlighted = True
         self.draw_color = self.highlight_color
-    
+
     def next_highlight(self):
         if self.highlighted:
             self.draw_color = converge_color(
-                self.draw_color,
-                self.color,
-                BALL_CONFIG['highlight_frames']
+                self.draw_color, self.color, BALL_CONFIG["highlight_frames"]
             )
         if self.draw_color == self.color:
             self.highlighted = False
@@ -33,9 +31,4 @@ class Ball:
         pygame.mixer.Sound.play(self.note)
 
     def draw(self, display_surf):
-        pygame.draw.circle(
-            display_surf,
-            self.draw_color,
-            self.position,
-            self.radius
-        )
+        pygame.draw.circle(display_surf, self.draw_color, self.position, self.radius)

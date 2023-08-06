@@ -10,56 +10,61 @@ from .objects.ball import Ball
 
 
 class App:
-    def __init__(self) -> None:      
+    def __init__(self) -> None:
         pygame.init()
         pygame.mixer.init(
-            frequency=MIXER_CONFIG['frequency'],
-            size=MIXER_CONFIG['size'],
-            channels=MIXER_CONFIG['channels']
+            frequency=MIXER_CONFIG["frequency"],
+            size=MIXER_CONFIG["size"],
+            channels=MIXER_CONFIG["channels"],
         )
 
         self.base_sndarray = pygame.sndarray.array(
-            pygame.mixer.Sound(file=RHYTHM_CONFIG['base_sound'])
+            pygame.mixer.Sound(file=RHYTHM_CONFIG["base_sound"])
         )
 
         self.clock = pygame.time.Clock()
         self.start_time = self.clock.get_time()
         self.prev_draw_time = self.start_time
 
-        self.window_size = WINDOW_CONFIG['size']
-        self.background_color = WINDOW_CONFIG['background_color']
+        self.window_size = WINDOW_CONFIG["size"]
+        self.background_color = WINDOW_CONFIG["background_color"]
         borderless_flag = 0
-        if WINDOW_CONFIG['borderless']:
+        if WINDOW_CONFIG["borderless"]:
             borderless_flag = pygame.NOFRAME
-            os.environ['SDL_VIDEO_WINDOW_POS'] = '0.0'
+            os.environ["SDL_VIDEO_WINDOW_POS"] = "0.0"
         self.display_surf = pygame.display.set_mode(
-            self.window_size,
-            pygame.HWSURFACE | pygame.DOUBLEBUF | borderless_flag
+            self.window_size, pygame.HWSURFACE | pygame.DOUBLEBUF | borderless_flag
         )
-        
-        self.base_duration = RHYTHM_CONFIG['duration'] * 1000
-        self.ball_radius = BALL_CONFIG['radius']
-        self.ball_margin = BALL_CONFIG['margin']
 
-        self.balls = [Ball(
-            radius=self.ball_radius,
-            position=(0, 0),
-            direction=1,
-            note=pygame.sndarray.make_sound(
-                change_frequency(
-                    self.base_sndarray,
-                    MIXER_CONFIG['frequency'],
-                    freq / RHYTHM_CONFIG['base_frequency']
-                )
+        self.base_duration = RHYTHM_CONFIG["duration"] * 1000
+        self.ball_radius = BALL_CONFIG["radius"]
+        self.ball_margin = BALL_CONFIG["margin"]
+
+        self.balls = [
+            Ball(
+                radius=self.ball_radius,
+                position=(0, 0),
+                direction=1,
+                note=pygame.sndarray.make_sound(
+                    change_frequency(
+                        self.base_sndarray,
+                        MIXER_CONFIG["frequency"],
+                        freq / RHYTHM_CONFIG["base_frequency"],
+                    )
+                ),
             )
-        ) for freq in RHYTHM_CONFIG['notes']]
+            for freq in RHYTHM_CONFIG["notes"]
+        ]
 
-        self.rhythm_margin = (self.window_size[1] - len(self.balls) * (2*self.ball_radius + self.ball_margin)) / 2
+        self.rhythm_margin = (
+            self.window_size[1]
+            - len(self.balls) * (2 * self.ball_radius + self.ball_margin)
+        ) / 2
 
         self.elapsed = 0
 
     def _exit(self):
-        print('Exiting')
+        print("Exiting")
         pygame.mixer.quit()
         pygame.quit()
         sys.exit(0)
@@ -69,9 +74,9 @@ class App:
         self.elapsed += dt
         self.display_surf.fill(self.background_color)
         for i, ball in enumerate(self.balls):
-            interval = (i*0.1 + 2) * self.base_duration
+            interval = (i * 0.1 + 2) * self.base_duration
             x = int((self.elapsed % interval) / interval * self.window_size[0])
-            y = (i + 1) * (2*self.ball_radius + self.ball_margin) + self.rhythm_margin
+            y = (i + 1) * (2 * self.ball_radius + self.ball_margin) + self.rhythm_margin
             prev_direction = ball.direction
             ball.direction = 1
 
