@@ -1,8 +1,10 @@
+from typing import Optional, Union
+
 import numpy as np
 from scipy import signal
 
 
-def converge(a, b, step):
+def converge(a: int, b: int, step: Union[int, float]):
     if a > b:
         if b == 0:
             b = a - 1
@@ -14,11 +16,17 @@ def converge(a, b, step):
     return a
 
 
-def converge_color(a, b, step):
+def converge_color(
+    a: tuple[int, int, int, Optional[int]],
+    b: tuple[int, int, int, Optional[int]],
+    step: Union[int, float],
+):
     return tuple(converge(a[i], b[i], step) for i in range(len(a)))
 
 
-def change_frequency(samples, base_sample_rate, factor):
+def change_frequency(
+    samples: np.ndarray, base_sample_rate: int, factor: Union[int, float]
+):
     return np.array(
         signal.resample(
             samples,
