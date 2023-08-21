@@ -4,7 +4,7 @@ import numpy as np
 from scipy import signal
 
 
-def converge(a: int, b: int, step: Union[int, float]):
+def converge(a: int, b: int, step: Union[int, float]) -> int:
     if a > b:
         if b == 0:
             b = a - 1
@@ -20,7 +20,7 @@ def converge_color(
     a: tuple[int, int, int, Optional[int]],
     b: tuple[int, int, int, Optional[int]],
     step: Union[int, float],
-):
+) -> tuple[int, int, int, Optional[int]]:
     return tuple(converge(a[i], b[i], step) for i in range(len(a)))
 
 
