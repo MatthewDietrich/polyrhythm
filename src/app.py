@@ -73,7 +73,7 @@ class App:
         self.elapsed += dt
         self.display_surf.fill(self.background_color)
         for i, ball in enumerate(self.balls):
-            interval = (i * 0.1 + 2) * self.base_duration
+            interval = (i * 0.5 + 2) * self.base_duration
             x = int((self.elapsed % interval) / interval * self.window_size[0])
             y = (i + 1) * (2 * self.ball_radius + self.ball_margin) + self.rhythm_margin
             prev_direction = ball.direction
